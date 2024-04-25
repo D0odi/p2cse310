@@ -40,9 +40,6 @@ void Graph::addEdge(Edge *newEdge)
     matrix[end][start] = 1;
     vertices[start].setDegree(vertices[start].getDegree() + 1);
     vertices[end].setDegree(vertices[end].getDegree() + 1);
-
-    std::cout << "Added edge "
-              << ": (" << start + 1 << ", " << end + 1 << std::endl;
 }
 
 void Graph::printGraph()
@@ -60,27 +57,22 @@ void Graph::printGraph()
 
 void Graph::dijkstraShortestPaths(int source)
 {
-    // Initialize distances to all vertices as infinite
     int *distances = new int[numOfVertices];
     for (int i = 0; i < numOfVertices; ++i)
     {
         distances[i] = INT_MAX;
     }
 
-    // Create an array to track if a vertex is processed
     bool *processed = new bool[numOfVertices];
     for (int i = 0; i < numOfVertices; ++i)
     {
         processed[i] = false;
     }
 
-    // Set the distance of the source vertex to itself as 0
     distances[source - 1] = 0;
 
-    // Loop to find shortest paths for all vertices
     for (int count = 0; count < numOfVertices - 1; ++count)
     {
-        // Find the vertex with the minimum distance value
         int minDistance = INT_MAX, minIndex;
         for (int v = 0; v < numOfVertices; ++v)
         {
@@ -91,10 +83,8 @@ void Graph::dijkstraShortestPaths(int source)
             }
         }
 
-        // Mark the selected vertex as processed
         processed[minIndex] = true;
 
-        // Update the distance value of the adjacent vertices of the selected vertex
         for (int v = 0; v < numOfVertices; ++v)
         {
             if (!processed[v] && matrix[minIndex][v] && distances[minIndex] != INT_MAX && distances[minIndex] + matrix[minIndex][v] < distances[v])
@@ -104,7 +94,6 @@ void Graph::dijkstraShortestPaths(int source)
         }
     }
 
-    // Print the distances to all vertices
     std::cout << "Single source shortest path lengths from node " << source << std::endl;
     for (int i = 0; i < numOfVertices; ++i)
     {
@@ -118,21 +107,31 @@ void Graph::dijkstraShortestPaths(int source)
         }
     }
 
-    // Cleanup dynamically allocated memory
     delete[] distances;
     delete[] processed;
 }
 
-void Graph::printOddDegreeVertices()
+int *Graph::getOddDegreeVertices()
 {
+    int *oddList = new int[numOfVertices];
+    int oddCount = 0;
+
     std::cout << "The odd degree vertices in G:" << std::endl;
     std::cout << "O = { ";
+
     for (int i = 0; i < numOfVertices; ++i)
     {
         if (vertices[i].getDegree() % 2 == 1)
         {
+            oddList[oddCount] = vertices[i].getIndex();
             std::cout << vertices[i].getIndex() << " ";
+            oddCount++;
         }
     }
+
     std::cout << "}" << std::endl;
+
+    oddList[oddCount] = -1;
+
+    return oddList;
 }

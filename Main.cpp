@@ -34,8 +34,18 @@ int main()
     }
 
     graph->printGraph();
-    graph->printOddDegreeVertices();
-    graph->dijkstraShortestPaths(1);
+    int *oddDegreeVertices = graph->getOddDegreeVertices();
+    for (int i = 0; i < numOfVertices; i++)
+    {
+        if (oddDegreeVertices[i] != -1)
+        {
+            graph->dijkstraShortestPaths(oddDegreeVertices[i]);
+        }
+        else
+        {
+            break;
+        }
+    }
 
     return 0;
 }

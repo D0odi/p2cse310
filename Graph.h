@@ -18,7 +18,7 @@ public:
     Graph(int numOfVertices, int numOfEdges);
     void addEdge(Edge *edge);
     void printGraph();
-    void printOddDegreeVertices();
+    int *getOddDegreeVertices();
     void dijkstraShortestPaths(int source);
 };
 
